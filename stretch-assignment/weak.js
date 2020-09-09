@@ -21,8 +21,8 @@ getScreenCords = (width,height,percent) =>{
 
 };
 let time = new Date();
-
-
+let sec = time.getSeconds();
+console.log(sec);
 let clicked = false;
 let currentScreenX = window.screen.width;
 let currentScreenY = window.screen.height;
@@ -31,7 +31,7 @@ let block = document.querySelectorAll('.block');
 const mouseDownThrow = () =>{
     block.forEach(e =>{
         e.addEventListener('mousedown', (event) =>{
-            clicked = true;
+            
             let perc = getScreenCords(currentScreenX,currentScreenY,60);
             // let square = document.querySelector(e['classList'][1]);
             gsap.to('.'+e['classList'][1], {translateX: perc.width,duration: 3, rotation: 360});
@@ -41,7 +41,6 @@ const mouseDownThrow = () =>{
 // Block thrown on click for less than 2 sec
 const clickThrow = () => {
     block.forEach(e =>{
-        clicked = false;
         e.addEventListener('click', (event) =>{
             let perc = getScreenCords(currentScreenX,currentScreenY,70);
             // let square = document.querySelector(e['classList'][1]);
@@ -58,24 +57,29 @@ const mouseUpThrown = () =>{
     });
 }
 
-const initIt = (sec) =>{
-    
-    let blockad = document.querySelector('.blocks');
-    blockad.addEventListener('mousedown',(e)=>{
-        if(sec >= 1400){
-            mouseDownThrow();
 
-        }else 
-            clickThrow();
-    });
+let startItup;
+
+const initTimeout = () => {
+  startItup = setTimeout(() =>{ 
+    mouseUpThrown();
+    console.log('2000'+clicked);
+   }, 2000);
+   startItup = setTimeout( ()=>{ 
+    if(clicked){
+        clickThrow();
+    }else{
+        mouseDownThrow();
+    }
+}, 4000);
 }
-const setit = () =>{
-  
-    let interV = setInterval(function(){
-        let sec = time.getSeconds();
-        initIt(sec); 
-        console.log('over sec'+ sec);
-    }, 4000);
-}
-  setit();
-        
+
+const stopTimeout = () => {
+  clearTimeout(startItup);
+} 
+
+let blocks = document.querySelector('.blocks');
+blocks.addEventListener('click', (event) => {
+    initTimeout();
+    stopTimeout();
+});

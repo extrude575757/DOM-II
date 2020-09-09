@@ -31,23 +31,25 @@ let block = document.querySelectorAll('.block');
 const mouseDownThrow = () =>{
     block.forEach(e =>{
         e.addEventListener('mousedown', (event) =>{
-            clicked = true;
+            clicked = false;
             let perc = getScreenCords(currentScreenX,currentScreenY,60);
             // let square = document.querySelector(e['classList'][1]);
             gsap.to('.'+e['classList'][1], {translateX: perc.width,duration: 3, rotation: 360});
         });
     });
+    clearInterval(interV);
 }
 // Block thrown on click for less than 2 sec
 const clickThrow = () => {
     block.forEach(e =>{
-        clicked = false;
+        clicked = true;
         e.addEventListener('click', (event) =>{
             let perc = getScreenCords(currentScreenX,currentScreenY,70);
             // let square = document.querySelector(e['classList'][1]);
             gsap.to('.'+e['classList'][1], {translateY: -perc.height,duration: 3, rotation: 360});
         });
     });
+    clearInterval(interV);
 }
 // Find out if mouse Up is activated and return true;
 const mouseUpThrown = () =>{
@@ -60,22 +62,17 @@ const mouseUpThrown = () =>{
 
 const initIt = (sec) =>{
     
-    let blockad = document.querySelector('.blocks');
-    blockad.addEventListener('mousedown',(e)=>{
-        if(sec >= 1400){
-            mouseDownThrow();
+    if(sec <= 100 && clicked === true){
+        clickThrow();
 
-        }else 
-            clickThrow();
-    });
+        sec = 0;
+    }else
+    mouseDownThrow();    
+    sec = 0;
 }
-const setit = () =>{
-  
-    let interV = setInterval(function(){
-        let sec = time.getSeconds();
-        initIt(sec); 
-        console.log('over sec'+ sec);
-    }, 4000);
-}
-  setit();
+let interV = setInterval(function(){
+    let sec = time.getSeconds();
+    console.log(sec);
+    initIt(sec); 
+}, 2000);
         
