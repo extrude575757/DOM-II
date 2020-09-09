@@ -22,6 +22,7 @@ aa.forEach(function(item,index){
     e.preventDefault(); // wont let you click it though it wont prevent bubbling
     if(index === 1){
         item.stopPropagation;
+        // e.stopPropagation;
     }else
     e.target.innerHTML = 'nope';
     
