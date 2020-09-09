@@ -23,5 +23,8 @@
   },
   "dependencies": {
     "gsap": "^3.5.1"
+  },
+  "build": {
+    "transpile": ["gsap","MorphSVGPlugin","DrawSVGPlugin"]
   }
 }
